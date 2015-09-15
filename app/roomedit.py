@@ -4,22 +4,7 @@ import tkFileDialog
 import math
 import json
 
-class Tilemap:
-    def __init__(self,w,h):
-        self.tilemap = []
-        for y in range( 0, h ):
-            self.tilemap.append( [0] * w )
-
-    def foreach(self, f):
-        for y in range(0,len(self.tilemap)):
-            for x in range(0,len(self.tilemap[y])):
-                f( x, y, self.tilemap[y][x] )
-
-    def w(self):
-        return len(self.tilemap[0])
-
-    def h(self):
-        return len(self.tilemap)
+from tilemap import Tilemap
 
 class TileConfig:
     tilecolor = {
@@ -139,7 +124,6 @@ class TilemapEdit:
 
 class App:
 
-
     def __init__(self):
 
         # tkinter init
@@ -163,7 +147,6 @@ class App:
         self.master.config(menu=self.menubar)
 
         self.master.minsize(self.master.winfo_width(), self.master.winfo_height())
-
 
     def run(self):
         self.master.mainloop()
