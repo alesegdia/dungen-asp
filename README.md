@@ -1,6 +1,15 @@
 # dungen-asp
 
-This is a project derived from my final university project. I made a research about *Answer Set Programming* to apply it to dungeon generation, but I finally used a more imperative approach because of some project requirements.
+A try on making a dungeon generator using [Answer Set programming](https://en.wikipedia.org/wiki/Answer_set_programming). 
+
+## What?
+
+Answer Set Programming is a recently popularised language that has been researched and used in the computer science field. Many studies have been done focusing on generating procedurally generated content for videogames.
+
+
+## Why?
+
+This project is derived from my final university project. I made a research about applying ASP to dungeon generation, but I finally used a more imperative approach because of some project requirements.
 
 ## Requirements
 
