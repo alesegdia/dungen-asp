@@ -204,28 +204,41 @@ class App:
         self.notebook = Notebook(self.master)
         self.tab1 = Frame(self.notebook)
         self.tab2 = Frame(self.notebook)
-        self.notebook.add(self.tab1, text="Room edition")
-        self.notebook.add(self.tab2, text="Generation setup")
+        self.notebook.add(self.tab1, text="Room Edition")
+        self.notebook.add(self.tab2, text="Set Edition")
         self.notebook.pack(fill=BOTH, expand=True)
 
         self.tmedit = TilemapEdit(self.master, self.tab1)
         self.genconfig = GenConfigEdit(self.master, self.tab2)
+
         self.menubar = Menu(self.master)
+
         self.menu = Menu(self.menubar, tearoff=0)
+        self.menu.add_command(label="Exit", command=self.master.quit)
+        self.menubar.add_cascade(label="File", menu=self.menu)
+
         self.menuroom = Menu(self.menubar, tearoff=0)
         self.menuroom.add_command(label="New...", command=self.tmedit.request_new_size)
         self.menuroom.add_command(label="Load...", command=self.tmedit.load_json)
         self.menuroom.add_command(label="Save...", command=self.tmedit.save_json)
-        self.menu.add_command(label="Exit", command=self.master.quit)
-        self.menubar.add_cascade(label="File", menu=self.menu)
         self.menubar.add_cascade(label="Room", menu=self.menuroom)
-        self.master.config(menu=self.menubar)
 
+        self.menugen = Menu(self.menubar, tearoff=0)
+        self.menugen.add_command(label="Size", command=self.set_gen_size)
+        self.menugen.add_command(label="Generate", command=self.gen_map)
+        self.menubar.add_cascade(label="Mapgen", menu=self.menugen)
+
+        self.master.config(menu=self.menubar)
         self.master.minsize(self.master.winfo_width(), self.master.winfo_height())
 
     def run(self):
         self.master.mainloop()
 
+    def set_gen_size(self):
+        pass
+
+    def gen_map(self):
+        pass
 
 
 if __name__ == '__main__':
