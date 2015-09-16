@@ -1,9 +1,9 @@
 
-5 { figure(l,F),
-    tile(l,F,X,Y),
-	tile(l,F,X+1,Y),
-	tile(l,F,X,Y+1),
-	tile(l,F,X,Y+2)
+5 { figure(f_ele,F),
+    tile(f_ele,F,X,Y),
+	tile(f_ele,F,X+1,Y),
+	tile(f_ele,F,X,Y+1),
+	tile(f_ele,F,X,Y+2)
 	: dim(X) : dim(Y) : dim(X+1) : dim(Y+1) : dim(Y+2) } 5 :- ele(F,X,Y).
 
 % number of eles
