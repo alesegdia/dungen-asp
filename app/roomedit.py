@@ -1,6 +1,7 @@
 from Tkinter import *
 from ttk import *
 import tkFileDialog
+import tkMessageBox
 import math
 import json
 
@@ -37,6 +38,66 @@ class RequestSizeDialog:
     def ok(self):
         self.app.new_tilemap(int(self.ex.get()), int(self.ey.get()))
         self.top.destroy()
+
+class TreeEditDialog:
+
+    def __init__(self, master, tree, item, column, heading, validation):
+        self.tree = tree
+        self.item = item
+        self.validation = validation
+        self.column = column
+        parent = master
+        top = self.top = Toplevel(parent)
+        Label(top, text=heading).pack()
+        self.val = Entry(top)
+        self.val.pack(padx=5)
+        b = Button(top, text="OK", command=self.ok)
+        b.pack(pady=5)
+
+    def ok(self):
+        if self.validation(self.val.get()):
+            if self.column == "#0":
+                self.tree.item(self.item, text=self.val.get())
+            else:
+                self.tree.set(self.item, column=self.column, value=self.val.get())
+        else:
+            tkMessageBox.showerror("Invalid value", "The value you entered is invalid for this field")
+        self.top.destroy()
+
+class GenConfigEdit:
+    def __init__(self, master, parentw):
+        self.parentw = parentw
+        self.master = master
+        self.tree = Treeview(parentw)
+        self.tree["columns"] = ("Room name", "Num rooms")
+        self.tree.column("Room name", width=100)
+        self.tree.column("Num rooms", width=100)
+        self.tree.heading("Room name", text="Room Name")
+        self.tree.heading("Num rooms", text="Num Rooms")
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree.pack(expand=True, fill=BOTH)
+        self.tree.bind("<Double-1>", self.selectItem)
+
+    def selectItem(self, event):
+        item = self.tree.selection()[0]
+        c = self.tree.identify_column(event.x)
+        TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: x.isdigit())
+
 
 class TilemapEdit:
     def __init__(self, master, parentw):
@@ -133,10 +194,11 @@ class App:
         self.tab1 = Frame(self.notebook)
         self.tab2 = Frame(self.notebook)
         self.notebook.add(self.tab1, text="Room edition")
-        self.notebook.add(self.tab2, text="tab2")
+        self.notebook.add(self.tab2, text="Generation setup")
         self.notebook.pack(fill=BOTH, expand=True)
 
         self.tmedit = TilemapEdit(self.master, self.tab1)
+        self.genconfig = GenConfigEdit(self.master, self.tab2)
         self.menubar = Menu(self.master)
         self.menu = Menu(self.menubar, tearoff=0)
         self.menu.add_command(label="New...", command=self.tmedit.request_new_size)
