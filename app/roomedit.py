@@ -4,6 +4,7 @@ import tkFileDialog
 import tkMessageBox
 import math
 import json
+import os
 
 from tilemap import Tilemap
 
@@ -64,39 +65,49 @@ class TreeEditDialog:
             tkMessageBox.showerror("Invalid value", "The value you entered is invalid for this field")
         self.top.destroy()
 
+
 class GenConfigEdit:
     def __init__(self, master, parentw):
         self.parentw = parentw
         self.master = master
         self.tree = Treeview(parentw)
-        self.tree["columns"] = ("Room name", "Num rooms")
-        self.tree.column("Room name", width=100)
-        self.tree.column("Num rooms", width=100)
-        self.tree.heading("Room name", text="Room Name")
-        self.tree.heading("Num rooms", text="Num Rooms")
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
-        self.tree.insert("", 0, text="Line 1", values=("1A","1b"))
+        self.tree["columns"] = ("roomname", "numrooms")
+        self.tree.column("roomname", width=100)
+        self.tree.column("numrooms", width=100)
+        self.tree.heading("roomname", text="Room Name")
+        self.tree.heading("numrooms", text="Number of rooms")
         self.tree.pack(expand=True, fill=BOTH)
         self.tree.bind("<Double-1>", self.selectItem)
+        self.newentrybutton = Button(parentw, text="New...", command=self.new_entry)
+        self.newentrybutton.pack()
+
+    def new_entry(self):
+        file = tkFileDialog.askopenfile()
+        filename, extension = os.path.splitext(file.name)
+        print(extension)
+        if extension == '.json':
+            try:
+                data = json.load(file)
+                h = len(data[0])
+                w = len(data)
+                for x in range(0,w):
+                    for y in range(0,h):
+                        if not isinstance( data[x][y], int ):
+                            raise Exception("Invalid intern data!")
+                self.tree.insert("", 0, text=file.name, values=("1", "1"))
+            except:
+                tkMessageBox.showerror("Invalid file", "JSON contents is not valid for a room!")
+        else:
+            tkMessageBox.showerror("Invalid file", "Not a JSON file!")
+
+        file.close()
+        pass
 
     def selectItem(self, event):
         item = self.tree.selection()[0]
         c = self.tree.identify_column(event.x)
-        TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: x.isdigit())
+        if c != "#0":
+            TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: x.isdigit())
 
 
 class TilemapEdit:
@@ -201,11 +212,13 @@ class App:
         self.genconfig = GenConfigEdit(self.master, self.tab2)
         self.menubar = Menu(self.master)
         self.menu = Menu(self.menubar, tearoff=0)
-        self.menu.add_command(label="New...", command=self.tmedit.request_new_size)
-        self.menu.add_command(label="Load...", command=self.tmedit.load_json)
-        self.menu.add_command(label="Save...", command=self.tmedit.save_json)
+        self.menuroom = Menu(self.menubar, tearoff=0)
+        self.menuroom.add_command(label="New...", command=self.tmedit.request_new_size)
+        self.menuroom.add_command(label="Load...", command=self.tmedit.load_json)
+        self.menuroom.add_command(label="Save...", command=self.tmedit.save_json)
         self.menu.add_command(label="Exit", command=self.master.quit)
         self.menubar.add_cascade(label="File", menu=self.menu)
+        self.menubar.add_cascade(label="Room", menu=self.menuroom)
         self.master.config(menu=self.menubar)
 
         self.master.minsize(self.master.winfo_width(), self.master.winfo_height())
