@@ -61,6 +61,6 @@ def asp_room_count(name, count):
 
 ''' generates ASP code to set a generated map size'''
 def asp_map_size(mapsize):
-	return ("#const width = {0}\n" + \
-		    "dim(1..width)").format(mapsize)
+	return ("#const width = {0}.\n" + \
+		    "dim(1..width).").format(mapsize)
 
