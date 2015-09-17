@@ -6,7 +6,9 @@ import math
 import json
 import os
 
-from tilemap import Tilemap
+from maputil.tilemap import Tilemap
+from asp.clingo import clingo_spawn
+from asp.generator import asp_room_entry, asp_map_size
 
 class TileConfig:
     tilecolor = {
@@ -238,7 +240,20 @@ class App:
         pass
 
     def gen_map(self):
-        pass
+
+    	# read base code
+    	f = open("../asp/sample-gen.lp", "r")
+    	generator_asp = f.read()
+    	f.close()
+
+    	# generate mapsize code
+    	mapsize_asp = asp_map_size(10)
+
+    	# generate
+    	roomentry_asp = asp_room_entry(self.tmedit.tilemap, "qwe", 3)
+    	
+    	# call clingo process
+    	print clingo_spawn( mapsize_asp, roomentry_asp, generator_asp )
 
 
 if __name__ == '__main__':
