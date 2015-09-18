@@ -79,6 +79,6 @@ class App:
 		print clingo_spawn( mapsize_asp, roomentry_asp, generator_asp )
 
 
-if __name__ == '__main__':
+def main():
 	app = App()
 	app.run()
