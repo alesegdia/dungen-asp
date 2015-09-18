@@ -8,12 +8,7 @@ from dungenasp.asp.generator import asp_room_entry, asp_map_size
 
 from dungenasp.widget.roomedit import TilemapEdit
 from dungenasp.widget.genconfigedit import GenConfigEdit
-
-
-class GenProcess:
-    def __init__(self, master, parentw):
-        self.parentw = parentw
-        self.master = master
+from dungenasp.widget.genprocess import GenProcess
 
 
 class App:
@@ -23,7 +18,7 @@ class App:
         # tkinter init
         self.master = Tk()
 
-        self.notebook = Notebook(self.master)
+        self.notebook = Notebook(self.master, width=1, height=1)
         self.tab1 = Frame(self.notebook)
         self.tab2 = Frame(self.notebook)
         self.tab3 = Frame(self.notebook)
@@ -54,7 +49,8 @@ class App:
         self.menubar.add_cascade(label="Mapgen", menu=self.menugen)
 
         self.master.config(menu=self.menubar)
-        self.master.minsize(self.master.winfo_width(), self.master.winfo_height())
+        self.master.update()
+        self.master.minsize(400,400)
 
     def run(self):
         self.master.mainloop()
@@ -65,7 +61,7 @@ class App:
     def gen_map(self):
 
         # read base code
-            f = open("../asp/sample-gen.lp", "r")
+            f = open("asp/sample-gen.lp", "r")
             generator_asp = f.read()
             f.close()
 

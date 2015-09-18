@@ -3,7 +3,7 @@ import tkFileDialog
 import json
 
 from dungenasp.widget.tilemapwidget import TilemapWidget
-from dungenasp.maputil.tileconfig import TileConfig
+from dungenasp.widget.tileconfig import TileConfig
 
 class RequestSizeDialog:
 

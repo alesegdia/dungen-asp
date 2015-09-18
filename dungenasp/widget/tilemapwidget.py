@@ -1,16 +1,16 @@
 from Tkinter import *
 
 from dungenasp.maputil.tilemap import Tilemap
-from dungenasp.maputil.tileconfig import TileConfig
+from dungenasp.widget.tileconfig import TileConfig
 
 class TilemapWidget:
 	def __init__(self, master, parentw):
 		self.master = master
 		self.parentw = parentw
 
-		self.canvasframe = Frame(parentw, width=300, height=300)
+		self.canvasframe = Frame(parentw, width=1, height=1)
 		self.canvasframe.pack(fill=BOTH, expand=True)
-		self.canvas = Canvas(self.canvasframe)
+		self.canvas = Canvas(self.canvasframe, width=1, height=1)
 
 		self.hbar = Scrollbar(self.canvasframe, orient=HORIZONTAL)
 		self.hbar.pack(side=BOTTOM, fill=X)
