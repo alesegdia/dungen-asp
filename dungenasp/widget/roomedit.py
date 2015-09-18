@@ -2,8 +2,8 @@ from Tkinter import *
 import tkFileDialog
 import json
 
-from tilemapwidget import TilemapWidget
-from maputil.tileconfig import TileConfig
+from dungenasp.widget.tilemapwidget import TilemapWidget
+from dungenasp.maputil.tileconfig import TileConfig
 
 class RequestSizeDialog:
 

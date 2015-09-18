@@ -1,6 +1,6 @@
 
-from maputil.tilemap import Tilemap
-from asp.generator import RoomModelASP, asp_room_entry
+from dungenasp.maputil.tilemap import Tilemap
+from dungenasp.asp.generator import RoomModelASP, asp_room_entry
 
 tm = Tilemap(10,10)
 tm.tilemap[0][2] = 1

@@ -1,6 +1,7 @@
 from Tkinter import *
-from maputil.tilemap import Tilemap
-from maputil.tileconfig import TileConfig
+
+from dungenasp.maputil.tilemap import Tilemap
+from dungenasp.maputil.tileconfig import TileConfig
 
 class TilemapWidget:
 	def __init__(self, master, parentw):
