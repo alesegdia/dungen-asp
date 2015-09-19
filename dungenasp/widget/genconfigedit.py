@@ -6,6 +6,7 @@ import tkFileDialog
 import tkMessageBox
 
 import json
+import os
 
 class TreeEditDialog:
 
@@ -34,7 +35,9 @@ class TreeEditDialog:
 
 class GenConfigEdit:
 	def __init__(self, master, parentw):
-		self.parentw = parentw
+		self.parentw = Frame(parentw)
+		parentw = self.parentw
+		#parentw.pack(fill="both", expand=True)
 		self.master = master
 		b = Button(parentw, text="OK")
 		self.tree = Treeview(parentw)
@@ -46,7 +49,15 @@ class GenConfigEdit:
 		self.tree.pack(expand=True, fill=BOTH)
 		self.tree.bind("<Double-1>", self.selectItem)
 		self.newentrybutton = Button(parentw, text="New...", command=self.new_entry)
-		self.newentrybutton.pack()
+		self.newentrybutton.pack(side="left")
+		self.deletebutton = Button(parentw, text="Delete...", command=self.new_entry)
+		self.deletebutton.pack(side="left")
+		self.loadbutton = Button(parentw, text="Load...", command=self.new_entry)
+		self.loadbutton.pack(side="left")
+		self.savebutton = Button(parentw, text="Save...", command=self.new_entry)
+		self.savebutton.pack(side="left")
+		self.clearbutton = Button(parentw, text="Clear...", command=self.new_entry)
+		self.clearbutton.pack(side="left")
 
 	def new_entry(self):
 		file = tkFileDialog.askopenfile()
@@ -73,6 +84,8 @@ class GenConfigEdit:
 	def selectItem(self, event):
 		item = self.tree.selection()[0]
 		c = self.tree.identify_column(event.x)
-		if c != "#0":
+		if c == "#2":
 			TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: x.isdigit())
+		elif c == "#1":
+			TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: not x[0].isdigit())
 
