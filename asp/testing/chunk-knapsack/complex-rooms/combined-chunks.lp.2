@@ -1,0 +1,31 @@
+#const height = 20.
+#const width = 20.
+
+row(1..height).
+column(1..width).
+
+1 { is_id(ID),
+	chunk(X,Y,W,H,ID) :
+	column(X) :
+	column(X+W) :
+	column(W) :
+	row(H) :
+	row(Y) :
+	row(Y+H) } 1 :- is_room(ID).
+
+exist_chunks(N-1) :- exist_chunks(N), N != 1.
+1 { chunk(X,Y,W,H,N) :
+	column(X) : column(X+W) : column(W) :
+	row(Y) : row(H) : row(Y+H) } 1 :- exist_chunks(N).
+
+exist_chunks(4).
+
+is_chunk(X,Y,ID) :-
+	column(X),
+	row(Y),
+	chunk(X1,Y1,W,H,ID),
+	is_id(ID),
+	X >= X1, X <= X1+W,
+	Y >= Y1, Y <= Y1+H.
+
+size(width, height).

@@ -1,0 +1,52 @@
+#const height = 20.
+#const width = 20.
+
+row(1..height).
+column(1..width).
+
+tile(X,Y) :- chunk(X,Y,1,1).
+
+2 { chunk(X,Y,3,3) :
+	column(X) :
+	column(X+3) :
+	row(Y+3) :
+	row(Y) } 2.
+
+% no overlapping
+:- 	chunk(X1,Y1,W1,H1), 
+	chunk(X2,Y2,W2,H2),  
+	1 {X1 != X2, Y1 != Y2},
+	X1 <= X2, X2 < X1 + W1, 
+	Y1 <= Y2, Y2 < Y1 + H1.
+
+
+:-  chunk(X1,Y1,W1,H1), 
+	chunk(X2,Y2,W2,H2), 
+	1 {X1 != X2,Y1 != Y2}, 
+	X1 <= X2, X2 < X1 + W1, 
+	Y2 <= Y1, Y1 < Y2 + H2.
+
+adj(X1,Y1,X2,Y2) :-
+	column(X1),
+	column(X2),
+	row(Y1),
+	row(Y2),
+	is_chunk(X1,Y1),
+	is_chunk(X2,Y2),
+	|X1-X2| + |Y1-Y2| == 1.
+
+is_chunk(X,Y) :-
+	column(X),
+	row(Y),
+	chunk(X1,Y1,W,H),
+	X >= X1, X <= X1+W,
+	Y >= Y1, Y <= Y1+H.
+
+
+connected(X1, Y1, W1, H1, X2, Y2, W2, H2) :-
+	chunk(X1,Y1,W1,H1),
+	chunk(X2,Y2,W2,H2),
+	adj(X1,Y1,X2,Y2).
+
+
+size(width, height).
