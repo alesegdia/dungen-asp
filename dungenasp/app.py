@@ -20,15 +20,12 @@ class App:
 
         self.notebook = Notebook(self.master, width=1, height=1)
         self.tab1 = Frame(self.notebook)
-        self.tab2 = Frame(self.notebook)
         self.tab3 = Frame(self.notebook)
         self.notebook.add(self.tab1, text="Room Edition")
-        self.notebook.add(self.tab2, text="Set Edition")
         self.notebook.add(self.tab3, text="Map generation")
         self.notebook.pack(fill=BOTH, expand=True)
 
         self.tmedit = TilemapEdit(self.master, self.tab1)
-        self.genconfig = GenConfigEdit(self.master, self.tab2)
         self.genprocess = GenProcess(self.master, self.tab3)
 
         self.menubar = Menu(self.master)
