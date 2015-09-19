@@ -5,6 +5,14 @@ from datetime import datetime
 from dungenasp.widget.tilemapwidget import TilemapWidget
 from dungenasp.widget.genconfigedit import GenConfigEdit
 
+from dungenasp.asp.generator import asp_map_size, asp_room_entry
+
+from dungenasp.asp.clingo import clingo_spawn
+
+from dungenasp.maputil.tilemap import Tilemap
+
+import json
+
 class TextLabel(Frame):
 
 	def __init__(self, parentw, text):
@@ -66,18 +74,38 @@ class GenOptions(Frame):
 			tree = self.parent.gc.tree
 			if len(tree.get_children()) == 0:
 				raise NoTreeChildrenException
+			code = asp_map_size(int(self.mapsizetext.get("1.0", END)))
 			for c in tree.get_children():
-				print(tree.set(c))
+				cdata = tree.set(c)
+				tm = Tilemap(1,1)
+				f = open(cdata['filepath'], 'r')
+				tm.tilemap = json.load(f)
+				f.close()
+				code = code + asp_room_entry(tm, cdata['roomname'], cdata['numrooms'])
+
+			f = open("asp/sample-gen.lp", "r")
+			generator_asp = f.read()
+			f.close()
+			code = code + generator_asp 
+
+			self.write_to_txt(self.gentxt, code)
+			self.write_to_txt(self.solvetxt, clingo_spawn(code))
+
+
+
 		except ValueError:
 			self.log("invalid map size")
 		except NoTreeChildrenException:
 			self.log("no rooms to use")
 
 	def log(self, txt):
+		self.write_to_txt(self.logtxt, txt)
+
+	def write_to_txt(self, txtwidget, txt):
 		date = datetime.now().strftime('[%02H:%02M:%02S]')
-		self.logtxt.config(state="normal")
-		self.logtxt.insert(END, date + " " + txt + "\n")
-		self.logtxt.config(state="disabled")
+		txtwidget.config(state="normal")
+		txtwidget.insert(END, date + " " + txt + "\n")
+		txtwidget.config(state="disabled")
 
 class GenConfig(PanedWindow):
 
