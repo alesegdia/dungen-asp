@@ -41,10 +41,13 @@ class GenConfigEdit:
 		self.master = master
 		b = Button(parentw, text="OK")
 		self.tree = Treeview(parentw)
-		self.tree["columns"] = ("roomname", "numrooms")
+		self.tree['show'] = "headings"
+		self.tree["columns"] = ("filepath", "roomname", "numrooms")
+		self.tree.column("filepath", width=100)
 		self.tree.column("roomname", width=100)
 		self.tree.column("numrooms", width=100)
-		self.tree.heading("roomname", text="Room Name")
+		self.tree.heading("filepath", text="File path")
+		self.tree.heading("roomname", text="Room name")
 		self.tree.heading("numrooms", text="Number of rooms")
 		self.tree.pack(expand=True, fill=BOTH)
 		self.tree.bind("<Double-1>", self.selectItem)
@@ -72,7 +75,8 @@ class GenConfigEdit:
 					for y in range(0,h):
 						if not isinstance( data[x][y], int ):
 							raise Exception("Invalid intern data!")
-				self.tree.insert("", 0, text=file.name, values=("1", "1"))
+				rname = "room" + str(len(self.tree.get_children()))
+				self.tree.insert("", 0, text="", values=(file.name, rname, "1"))
 			except:
 				tkMessageBox.showerror("Invalid file", "JSON contents is not valid for a room!")
 		else:
@@ -84,8 +88,8 @@ class GenConfigEdit:
 	def selectItem(self, event):
 		item = self.tree.selection()[0]
 		c = self.tree.identify_column(event.x)
-		if c == "#2":
+		if c == "#3":
 			TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: x.isdigit())
-		elif c == "#1":
+		elif c == "#2":
 			TreeEditDialog(self.master, self.tree, item, c, "replace-me", lambda x: not x[0].isdigit())
 
