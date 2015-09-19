@@ -5,6 +5,8 @@ from dungenasp.widget.tileconfig import TileConfig
 
 class TilemapWidget:
 	def __init__(self, master, parentw):
+
+		self.tilesize = TileConfig.tilesize
 		self.master = master
 		self.parentw = parentw
 
@@ -28,8 +30,8 @@ class TilemapWidget:
 		self.tilemap.foreach(self.update_canvas_)
 
 	def fit_canvas_to_tilemap(self):
-		canvas_width = self.tilemap.w() * TileConfig.tilesize
-		canvas_height = self.tilemap.h() * TileConfig.tilesize
+		canvas_width = self.tilemap.w() * self.tilesize
+		canvas_height = self.tilemap.h() * self.tilesize
 		self.canvas.width = canvas_width
 		self.canvas.height = canvas_height
 		self.canvas.config(scrollregion=(0,0,canvas_width, canvas_height), xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set, width = 300, height = 300 )
@@ -45,7 +47,7 @@ class TilemapWidget:
 		self.update_canvas()
 
 	def update_canvas_(self, x, y, tile):
-		tilesize = TileConfig.tilesize
+		tilesize = self.tilesize
 		x1 = x * tilesize
 		y1 = y * tilesize
 		x2 = (x + 1) * tilesize
