@@ -22,7 +22,7 @@ class RoomModelASP:
 		self.generate_tiles_asp()
 		self.generate_tiles_dim()
 
-		prefix = "{0} {{ figure(r_{1},F),\n".format(len(self.tiles)+1, self.name)
+		prefix = "{0} {{ figure(F),\n".format(len(self.tiles)+1, self.name)
 		postfix = " }} {0} :- {1}(F,X,Y).\n\n".format(len(self.tiles)+1, self.name)
 
 		definition = prefix + \
@@ -38,7 +38,7 @@ class RoomModelASP:
 	
 	def generate_tiles_asp(self):
 		# generate asp definitions for each tile
-		self.tileasp = [ "tile(r_{0},F,X+{1},Y+{2}),\n" \
+		self.tileasp = [ "tile(F,X+{1},Y+{2}),\n" \
 				.format(self.name, e["x"], e["y"]) for e in self.tiles ] 
 		self.tileasp[-1] = self.tileasp[-1][:-2] + "\n"
 	
@@ -62,5 +62,5 @@ def asp_room_count(name, count):
 ''' generates ASP code to set a generated map size'''
 def asp_map_size(mapsize):
 	return ("#const width = {0}.\n" + \
-		    "dim(1..width).").format(mapsize)
+		    "dim(1..width).\n").format(mapsize)
 
