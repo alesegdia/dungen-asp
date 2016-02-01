@@ -11,6 +11,12 @@ Answer Set Programming is a recently popularised language that has been research
 
 This project is derived from my final university project. I made a research about applying ASP to dungeon generation, but I finally used a more imperative approach because of some project requirements.
 
+## How?
+
+Inside the `asp` folder, you will find a few `ansprolog` scripts. To execute the GUI do `python -m dungenasp`. Instructions to be done.
+
+
+
 ## Requirements
 
 To run the GUI application you need the **Tkinter** python module.
