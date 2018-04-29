@@ -89,9 +89,10 @@ class GenOptions(Frame):
 			code = code + generator_asp 
 
 			self.write_to_txt(self.gentxt, code)
-			self.write_to_txt(self.solvetxt, clingo_spawn(code))
+			output_code = clingo_spawn(code)
+			self.write_to_txt(self.solvetxt, output_code)
 
-
+			self.parent.parent.resultingmap.load_asp_tilemap(output_code)
 
 		except ValueError:
 			self.log("invalid map size")
@@ -109,8 +110,11 @@ class GenOptions(Frame):
 
 class GenConfig(PanedWindow):
 
-	def __init__(self, parent, master):
+	def __init__(self, parent, master, pparent):
+
 		PanedWindow.__init__(self, parent, orient=VERTICAL, sashwidth=8, bg="gray")
+
+		self.parent = pparent
 
 		self.gc = GenConfigEdit(master, self)
 		self.go = GenOptions(self)
@@ -129,7 +133,7 @@ class GenProcess:
 
 		self.panedw = PanedWindow(parentw, orient=HORIZONTAL, bg="gray", sashwidth=8)
 
-		self.config = GenConfig(self.panedw, master)
+		self.config = GenConfig(self.panedw, master, self)
 		self.config.pack(expand=True, fill="both")
 
 		#self.gc.parentw.pack(side="top", expand=True, fill="both")

@@ -38,7 +38,32 @@ class TilemapWidget:
 
 	def load_tilemap(self, tm):
 		self.tilemap.tilemap = tm
+		self.refresh_tilemap()
+
+	def load_tilemap_object(self, tm):
+		self.tilemap = tm
+		self.refresh_tilemap()
+
+	def refresh_tilemap(self):
 		self.fit_canvas_to_tilemap()
+		self.update_canvas()
+
+	def load_asp_tilemap(self, asp_str):
+		size_pattern = re.compile('dim\(([0-9]+)\).')
+		size_matches = size_pattern.findall(asp_str)
+		size = max(map(int, size_matches)) + 1
+
+		ntm = Tilemap(size,size)
+
+		tile_pattern = re.compile('tile\([0-9]+,([0-9]+,[0-9]+)\).')
+		matches = tile_pattern.findall(asp_str)
+		for match in matches:
+			coords = match.split(",")
+			x = int(coords[0])
+			y = int(coords[1])
+			ntm.tilemap[y][x] = 1
+
+		self.load_tilemap_object(ntm)
 		self.update_canvas()
 
 	def new_tilemap(self,w,h):
